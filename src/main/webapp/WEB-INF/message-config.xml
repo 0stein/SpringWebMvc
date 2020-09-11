@@ -16,4 +16,12 @@
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
     	<property name="defaultLocale" value="ko" />
     </bean>
+    
+    
+    <!-- 파일 업로드 관련 설정임 -->
+    <bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8" />
+	</bean>
+	
 </beans>

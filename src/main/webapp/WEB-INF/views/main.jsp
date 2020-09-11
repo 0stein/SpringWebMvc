@@ -7,7 +7,15 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<style>
+	li{
+		list-style: none;
+	}
+</style>
 <body>
+	<header>
+		<h1>스프링 mvc 테스트</h1>
+	</header>
 	<fieldset>
 		<legend>original login form</legend>
 		<form action="main" method="post">
@@ -21,16 +29,16 @@
 				</li>
 				<li>
 					<select name="position">
-						<option value="student">학생</option>
-						<option value="worker">직장인</option>						
-						<option value="homemaker">주부</option>
+						<option value="학생">학생</option>
+						<option value="직장인">직장인</option>						
+						<option value="주부">주부</option>
 					</select>
 				</li>
 				<li>
 					<p>취미</p>
-					<label>운동<input type="checkbox" name="hobby" value="exercise"/></label>
-					<label> 요리<input type="checkbox" name="hobby" value="cooking"/></label>
-					<label> 낚시<input type="checkbox" name="hobby" value="fishing"/></label>
+					<label>운동<input type="checkbox" name="hobby" value="운동"/></label>
+					<label> 요리<input type="checkbox" name="hobby" value="요리"/></label>
+					<label> 낚시<input type="checkbox" name="hobby" value="낚시"/></label>
 				</li>
 			</ul>	
 			<input type="submit"/>
@@ -57,20 +65,30 @@
 				</li>
 				<li>
 					<form:select path="position">
-						<form:option value="student">학생</form:option>
-						<form:option value="worker">직장인</form:option>
-						<form:option value="homemaker">주부</form:option>
+						<form:option value="학생">학생</form:option>
+						<form:option value="직장인">직장인</form:option>
+						<form:option value="주부">주부</form:option>
 					</form:select>
 				</li>
 				<li>
 					<p>취미</p>
-					<form:checkbox path="hobby" value="exercise" label="운동" />
-					<form:checkbox path="hobby" value="cooking" label="요리"/>
-					<form:checkbox path="hobby" value="fishing" label="낚시"/>					
+					<form:checkbox path="hobby" value="운동" label="운동" />
+					<form:checkbox path="hobby" value="요리" label="요리" />
+					<form:checkbox path="hobby" value="낚시" label="낚시" />					
 				</li>
 			</ul>
 			<input type="submit"/>
 		</form:form>
+	</fieldset>
+	
+	
+	<fieldset>
+		<legend>file upload</legend>
+		<form action="main/upload" method="POST" enctype="multipart/form-data">
+			제목: <input type="text" name="title"><br/> 
+			파일: <input type="file" name="f"><br/> 
+    		<input type="submit" value="전송" /> 
+		</form>
 	</fieldset>
 </body>
 </html>

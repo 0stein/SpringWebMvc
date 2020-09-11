@@ -18,6 +18,10 @@
 		<c:forEach var="x" items="${member.hobby}">
 			${x}&nbsp;
 		</c:forEach>
+		
 	</p>
+	<form action="info/data">
+		<input type="submit" value="see data" />				
+	</form>
 </body>
 </html>

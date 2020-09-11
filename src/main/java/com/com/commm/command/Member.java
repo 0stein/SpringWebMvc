@@ -1,11 +1,18 @@
 package com.com.commm.command;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class Member {
+	@NotEmpty
 	private String name;
+	@NotEmpty
+	@Email
 	private String email;
 	private String gender;
 	private String position;
 	private String[] hobby;
+	
 	
 	public String[] getHobby() {
 		return hobby;
@@ -37,6 +44,8 @@ public class Member {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
+	
+	
 	@Override
 	public String toString() {
 		return name+email+gender+position+hobby;
