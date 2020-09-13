@@ -1,8 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
+	
+	<!-- dataSource 설정 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	    <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property> 
+	    <property name="url" value="jdbc:mysql://localhost:3306/portal2moon?serverTimezone=UTC"></property>
+	    <property name="username" value="portal2moon"></property>
+	  	<property name="password" value="portal2moon"></property>
+	</bean>	
+	
+	
+	<!-- mybatis를 구동시키기 위해서는 2개의 빈을 설정해주어야 한다. -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource" />
+    	<property name="configLocation" value="classpath:config/sqlMapConfig.xml" />
+    	<property name="mapperLocations" >
+    		<list>
+    			<value>classpath:mapper/Member.xml</value>
+    		</list>
+    	</property>
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" >
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	
+	<context:component-scan base-package="com.com.commm">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
 </beans>

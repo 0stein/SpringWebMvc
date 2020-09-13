@@ -12,10 +12,19 @@ public class Member {
 	private String gender;
 	private String position;
 	private String[] hobby;
+	private String hobbyString;
 	
+	
+	//dao를 통해 mysql에 넣기 위해 급조한 변수인데... 최선인지 모르겠다.
+	public String getHobbyString() {
+		return hobbyString;
+	}
+	public void setHobbyString(String hobbyString) {
+		this.hobbyString = hobbyString;
+	}
 	
 	public String[] getHobby() {
-		return hobby;
+		return this.hobby;
 	}
 	public void setHobby(String[] hobby) {
 		this.hobby = hobby;

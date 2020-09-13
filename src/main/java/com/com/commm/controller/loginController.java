@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -20,10 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.com.commm.command.Member;
+import com.com.commm.service.MemberService;
 
 @Controller
 @RequestMapping("/main")
 public class loginController {
+	@Autowired
+	MemberService memberService;
+	
 	String uploadPath = "C:\\Users\\aad33\\multipart";
 	
 	@ModelAttribute
@@ -34,6 +39,17 @@ public class loginController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String mainpage() {
 		return "main";
+	}
+	
+	@RequestMapping(value = "select", method = RequestMethod.POST)
+	public String findUserWithName(@RequestParam String name) {
+		Member member = memberService.selectMember(name);
+		if(member != null) {
+			System.out.println(member);
+		}else {
+			System.out.println("null--");
+		}
+		return "redirect:/";
 	}
 	
 	@RequestMapping("/info")
@@ -56,7 +72,8 @@ public class loginController {
 		//session 설정
 		HttpSession httpSession = httpServletRequest.getSession();
 		httpSession.setAttribute("member", member);
-	
+		
+		memberService.addMember(member);
 		return "redirect:main/info";
 	}
 //	

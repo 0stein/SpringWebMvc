@@ -90,5 +90,13 @@
     		<input type="submit" value="전송" /> 
 		</form>
 	</fieldset>
+	
+	<fieldset>
+		<legend>find user with name</legend>
+		<form action="main/select" method="POST">
+			<label>이름 : <input type="text" name="name"/></label>
+			<input type="submit"/>
+		</form>
+	</fieldset>
 </body>
 </html>
