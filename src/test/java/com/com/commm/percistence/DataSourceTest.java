@@ -1,9 +1,10 @@
-package com.com.commm.controller;
+package com.com.commm.percistence;
+
+import java.sql.Connection;
 
 import javax.inject.Inject;
+import javax.sql.DataSource;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -13,21 +14,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 //location 속성 경로에 있는 xml 파일을 이용해서 스프링이 로딩됨
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
-public class MybatisTest {
+public class DataSourceTest {
+	
 	@Inject
-	private SqlSessionFactory sqlFactory;
+	private DataSource dataSource;
 	
 	@Test
-	public void testFactory() {
-		System.out.println(sqlFactory);
-	}
-	
-	@Test
-	public void testSession() {
-		try(SqlSession session = sqlFactory.openSession()){
-			System.out.println(session);
-		}catch (Exception e) {
+	public void testConn() throws Exception{
+		try(Connection con = dataSource.getConnection()){
+			System.out.println(con);
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 }
+

@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="config.Member">
+	
+	
 	<insert id = "insertMember">
-		INSERT INTO Member(name, email, gender, position, hobbyString) VALUES(#{name}, #{email}, #{gender}, #{position}, #{hobbyString})
+		INSERT INTO Member(id, password, name, email, gender, position, hobbyString) VALUES(#{id} ,#{password} ,#{name}, #{email}, #{gender}, #{position}, #{hobbyString})
 	</insert>
 	
 	<select id="selectMember" resultType="com.com.commm.command.Member">
-		SELECT * from Member WHERE name = #{name}
+		SELECT * from Member WHERE id = #{id}
+	</select>
+	
+	<select id="selectAll"  resultType="com.com.commm.command.Member">
+		SELECT * from Member
 	</select>
 </mapper>

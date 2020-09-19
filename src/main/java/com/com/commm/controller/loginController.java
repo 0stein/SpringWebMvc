@@ -1,116 +1,53 @@
 package com.com.commm.controller;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.com.commm.command.Member;
-import com.com.commm.service.MemberService;
+import com.com.commm.service.MemberAuthService;
+import com.com.commm.service.MemberCURDService;
 
 @Controller
-@RequestMapping("/main")
+@RequestMapping("/login")
 public class loginController {
-	@Autowired
-	MemberService memberService;
 	
-	String uploadPath = "C:\\Users\\aad33\\multipart";
+	@Autowired
+	MemberCURDService memberCRUDService;
+	@Autowired
+	MemberAuthService memberAuthService;
 	
 	@ModelAttribute
-	public Member settingMember() {
+	public Member setMemberAttribute() {
 		return new Member();
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String mainpage() {
-		return "main";
-	}
-	
-	@RequestMapping(value = "select", method = RequestMethod.POST)
-	public String findUserWithName(@RequestParam String name) {
-		Member member = memberService.selectMember(name);
-		if(member != null) {
-			System.out.println(member);
-		}else {
-			System.out.println("null--");
-		}
-		return "redirect:/";
-	}
-	
-	@RequestMapping("/info")
-	public ModelAndView infopage(HttpServletRequest httpServletRequest) {
-		Member member = (Member) httpServletRequest.getAttribute("member");
-		ModelAndView moa = new ModelAndView();
-		moa.setViewName("info");
-		moa.addObject("member",member);
-		return moa;
+	public String loginPage() {
+		return "login";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public String submit(
-			@Valid @ModelAttribute Member member , BindingResult bindingResult
-			,HttpServletRequest httpServletRequest) {
-		//new MemberValidator().validate(member, bindingResult); @Valid 와 @InitBinder가 자동으로 호출해준다.
-		if(bindingResult.hasErrors()) {
-			return "main";
+	public String loginProcess(
+			Model model,
+			@RequestParam("id") String id, @RequestParam("password") String password) {
+		if(id == null || password == null) {
+			model.addAttribute("errorMessage", "id 또는 password를 입력하세요.");
+			return "login";
 		}
-		//session 설정
-		HttpSession httpSession = httpServletRequest.getSession();
-		httpSession.setAttribute("member", member);
-		
-		memberService.addMember(member);
-		return "redirect:main/info";
-	}
-//	
-//	@InitBinder
-//	protected void initBinder(WebDataBinder binder) {
-//		binder.setValidator(new MemberValidator());
-//	}
-	
-	
-	//jackson-databind json-parser
-	@RequestMapping(value="/info/data")
-	@ResponseBody
-	public Member jsonmember(HttpServletRequest request) {
-		Member member = (Member)request.getSession().getAttribute("member");
-		request.getSession().invalidate();
-		return member;
-	}
-	
-	//파일 업로드 방법 1 requestParam을 통해 전달받기.
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public String getMultipart(@RequestParam("f") MultipartFile multipartFile, @RequestParam("title") String title, Model model) throws IOException {
-		if(!multipartFile.isEmpty()) {
-			byte[] bytes = multipartFile.getBytes();
-			File file = new File(uploadPath, multipartFile.getOriginalFilename());
-			FileCopyUtils.copy(bytes, file);
-			model.addAttribute("title", title);
-			model.addAttribute("fileName",multipartFile.getOriginalFilename());
-			model.addAttribute("uploadPath", file.getAbsolutePath());
+		if(!memberAuthService.IsExist(id)) {
+			model.addAttribute("errorMessage", "id가 존재하지 않습니다.");
+			return "login";
 		}
-		
-		return "checkUploadFile";
+		if(memberAuthService.IsMatchIDPW(id, password)) {
+			return "redirect:/welcome";	
+		}else {
+			model.addAttribute("errorMessage", "password가 일치하지 않습니다.");
+			return "login";
+		}
 	}
-	
-	//파일 업로드 방법 2
-	// public String ***(MultipartHttpServletRequest request)
-	// MultipartFile multipartFIle = request.getFile("f");
-	
-	//파일 업로드 방법 3
-	// 커맨드 객체 사용.
 }

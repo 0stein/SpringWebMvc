@@ -1,5 +1,7 @@
 package com.com.commm.percistence;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -15,15 +17,22 @@ public class MemberDaoImpl implements MemberDao{
 	
 	private static final String InsertMember = "config.Member.insertMember";
 	private static final String SelectMember = "config.Member.selectMember";
-	
+	private static final String SelectAll = "config.Member.selectAll";
 	
 	@Override
-	public void insertMember(Member vo) {
-		sqlsession.insert(InsertMember, vo);
+	public void insertMember(Member member) {
+		sqlsession.insert(InsertMember, member);
 	}
 
 	@Override
-	public Member selectMember(String name) {
-		return (Member)sqlsession.selectOne(SelectMember,name);
+	public Member selectMember(String id) {
+		return (Member)sqlsession.selectOne(SelectMember, id);
 	}
+
+	@Override
+	public List<Member> selectALL() {
+		return sqlsession.selectList(SelectAll);
+	}
+
+	
 }

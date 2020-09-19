@@ -5,6 +5,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class Member {
 	@NotEmpty
+	private String id;
+	@NotEmpty
+	private String password;
+	@NotEmpty
 	private String name;
 	@NotEmpty
 	@Email
@@ -16,6 +20,19 @@ public class Member {
 	
 	
 	//dao를 통해 mysql에 넣기 위해 급조한 변수인데... 최선인지 모르겠다.
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String getHobbyString() {
 		return hobbyString;
 	}
@@ -57,6 +74,6 @@ public class Member {
 	
 	@Override
 	public String toString() {
-		return name+email+gender+position+hobby;
+		return id+password+name+email+gender+position+hobby;
 	}	
 }
